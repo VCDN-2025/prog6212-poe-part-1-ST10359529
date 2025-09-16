@@ -1,0 +1,24 @@
+﻿@model dynamic
+<h2 class="mb-4">Submit Monthly Claim</h2>
+<form>
+    <div class="mb-3">
+        <label class="form-label">Hours Worked</label>
+        <input type="number" class="form-control" min="0" step="0.01" placeholder="e.g., 20.00" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Hourly Rate</label>
+        <input type="number" class="form-control" min="0" step="0.01" placeholder="e.g., 150.00" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Notes</label>
+        <textarea class="form-control" rows="3" placeholder="Add any notes..."></textarea>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Upload Document</label>
+        <input type="file" class="form-control" accept=".pdf,.docx">
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg">Submit Claim</button>
+</form>
+<div class="mt-4">
+    <p>Status: <span class="badge bg-secondary">Pending</span></p>
+</div>

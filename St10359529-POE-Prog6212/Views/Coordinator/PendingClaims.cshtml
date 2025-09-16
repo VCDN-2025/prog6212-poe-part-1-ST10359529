@@ -1,0 +1,25 @@
+﻿@model dynamic
+<h2 class="mb-4">Pending Claims</h2>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Lecturer</th>
+            <th>Hours Worked</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>John Doe</td>
+            <td>20.00</td>
+            <td>R3000.00</td>
+            <td><span class="badge bg-warning">Pending</span></td>
+            <td>
+                <button class="btn btn-success btn-sm me-2">Approve</button>
+                <button class="btn btn-danger btn-sm">Reject</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

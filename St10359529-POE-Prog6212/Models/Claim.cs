@@ -4,9 +4,9 @@
     {
         public int Id { get; set; }
         public int LecturerId { get; set; }
-        public string Name { get; set; } = string.Empty;  // New field
-        public string Surname { get; set; } = string.Empty;  // New field
-        public string ContactNumber { get; set; } = string.Empty;  // New field
+        public string Name { get; set; } = string.Empty;  
+        public string Surname { get; set; } = string.Empty;  
+        public string ContactNumber { get; set; } = string.Empty;  
         public decimal HoursWorked { get; set; }
         public decimal HourlyRate { get; set; }
         public decimal TotalAmount { get; set; }

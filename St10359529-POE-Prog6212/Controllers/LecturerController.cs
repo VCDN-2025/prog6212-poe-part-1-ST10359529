@@ -29,7 +29,7 @@ namespace St10359529_POE_Prog6212.Controllers
                     model.TotalAmount = model.HoursWorked * model.HourlyRate;
                     model.SubmissionDate = DateTime.Now;
                     model.Status = "Pending";
-                    model.LecturerId = 1; // Hardcoded for prototype
+                    model.LecturerId = 1; 
 
                     ClaimRepository.Claims.Add(model);
 

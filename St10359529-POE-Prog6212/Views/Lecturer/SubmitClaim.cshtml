@@ -1,24 +1,51 @@
-﻿@model dynamic
+﻿@model St10359529_POE_Prog6212.Models.Claim
 <h2 class="mb-4">Submit Monthly Claim</h2>
-<form>
+<form asp-action="SubmitClaim" method="post" enctype="multipart/form-data">
     <div class="mb-3">
-        <label class="form-label">Hours Worked</label>
-        <input type="number" class="form-control" min="0" step="0.01" placeholder="e.g., 20.00" required>
+        <label asp-for="Name" class="form-label">Name</label>
+        <input asp-for="Name" class="form-control" required>
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label class="form-label">Hourly Rate</label>
-        <input type="number" class="form-control" min="0" step="0.01" placeholder="e.g., 150.00" required>
+        <label asp-for="Surname" class="form-label">Surname</label>
+        <input asp-for="Surname" class="form-control" required>
+        <span asp-validation-for="Surname" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label class="form-label">Notes</label>
-        <textarea class="form-control" rows="3" placeholder="Add any notes..."></textarea>
+        <label asp-for="ContactNumber" class="form-label">Contact Number</label>
+        <input asp-for="ContactNumber" class="form-control" required>
+        <span asp-validation-for="ContactNumber" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="HoursWorked" class="form-label">Hours Worked</label>
+        <input asp-for="HoursWorked" class="form-control" min="0" step="0.01" required>
+        <span asp-validation-for="HoursWorked" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="HourlyRate" class="form-label">Hourly Rate</label>
+        <input asp-for="HourlyRate" class="form-control" min="0" step="0.01" required>
+        <span asp-validation-for="HourlyRate" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Notes" class="form-label">Notes</label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
     </div>
     <div class="mb-3">
         <label class="form-label">Upload Document</label>
-        <input type="file" class="form-control" accept=".pdf,.docx">
+        <input type="file" name="documentFile" class="form-control" accept=".pdf,.docx,.xlsx">
     </div>
     <button type="submit" class="btn btn-primary btn-lg">Submit Claim</button>
 </form>
-<div class="mt-4">
-    <p>Status: <span class="badge bg-secondary">Pending</span></p>
-</div>
+@if (ViewData["Message"] != null)
+{
+    <div class="alert alert-success mt-3">@ViewData["Message"]</div>
+}
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger mt-3">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}

@@ -8,6 +8,7 @@ namespace St10359529_POE_Prog6212
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSession(); // Enable session support
 
             var app = builder.Build();
 
@@ -15,15 +16,13 @@ namespace St10359529_POE_Prog6212
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            app.UseSession(); // Use session middleware
             app.UseAuthorization();
 
             app.MapControllerRoute(

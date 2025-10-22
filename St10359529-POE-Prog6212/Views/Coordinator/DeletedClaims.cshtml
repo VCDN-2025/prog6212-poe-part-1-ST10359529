@@ -1,0 +1,37 @@
+﻿@model IEnumerable<St10359529_POE_Prog6212.Models.Claim>
+<h2 class="mb-4">Deleted Claims</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Contact Number</th>
+            <th>Hours</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Submission Date</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in Model)
+        {
+            <tr>
+                <td>@claim.Id</td>
+                <td>@claim.Name</td>
+                <td>@claim.Surname</td>
+                <td>@claim.ContactNumber</td>
+                <td>@claim.HoursWorked</td>
+                <td>@claim.TotalAmount</td>
+                <td><span class="badge bg-secondary">Deleted</span></td> <!-- Set status to "Deleted" -->
+                <td>@claim.SubmissionDate.ToShortDateString()</td>
+              
+            </tr>
+        }
+    </tbody>
+</table>
+@if (!Model.Any())
+{
+    <p class="text-info">No deleted claims yet.</p>
+}

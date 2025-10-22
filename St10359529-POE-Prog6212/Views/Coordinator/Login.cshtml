@@ -1,0 +1,22 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Manager Login";
+}
+
+<h2 class="mb-4">Manager Login</h2>
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+<form asp-action="Login" method="post" class="mt-3">
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+<a href="@Url.Action("PendingClaims", "Coordinator")" class="btn btn-secondary mt-2">Go to Pending Claims (Login Required)</a>

@@ -1,25 +1,32 @@
-# Contract Monthly Claim System (CMCS) - PROG6212 Assignment 1
+# Contract Monthly Claim System (CMCS) - PROG6212 Assignment
 
 ## Overview
-This repository contains the Part 1 submission for PROG6212 Assignment 1, a non-functional prototype of the Contract Monthly Claim System (CMCS). The system is designed as a .NET Core MVC web application to manage claim submissions and approvals for lecturers and coordinators. This prototype includes documentation, UML diagrams, a project plan, GUI design, and version control setup, adhering to the 45-hour minimum development guideline.
+The Contract Monthly Claim System (CMCS) is a web application developed for the PROG6212 course, designed to manage monthly claims for lecturers and coordinate their approval or rejection by academic managers. This project is divided into two parts:
 
-## Project Details
-- **Author:** Nehaar Gosai (ST10359529)
-- **Module:** Programming 2B (PROG6212)
-- **Submission Date:** September 17, 2025
-- **Status:** Non-functional prototype (Part 1 requirements)
+- **Part 1:** Initial implementation of claim submission, tracking, and basic management features.
+- **Part 2:** Enhanced functionality including document handling (though not fully implemented), status-specific pages, manager login for pending claims, and unit testing.
+
+This README covers the setup, features, and usage for both parts.
 
 ## Features
-- **MVC Architecture:** Utilizes .NET Core MVC with Razor views and Entity Framework Core (EF Core) for future database integration.
-- **GUI Design:** Responsive interface with Bootstrap styling, including a home page, claim submission form, and pending claims table.
-- **Database Structure:** Defined models for Lecturer, Claim, Document, and UserRole, with planned SQL Server integration.
-- **Version Control:** Managed with Git and hosted on GitHub.
+### Part 1
+- **Claim Submission:** Lecturers can submit claims with details such as name, surname, contact number, hours worked, and total amount.
+- **Track Status:** Lecturers can view the status of their submitted claims.
+- **Basic Navigation:** Includes a navbar with links to Home, Submit Claim, and Privacy pages.
 
-## Setup Instructions
-1. **Prerequisites:**
-   - .NET Core SDK (version 6.0 or later)
-   - Visual Studio 2022 (or compatible IDE)
-   - Git (for cloning the repository)
-2. **Clone the Repository:**
+### Part 2
+- **Pending Claims Management:** Managers can log in to view and manage pending claims with options to approve, reject, or delete.
+- **Status-Specific Pages:** Separate views for Approved Claims, Rejected Claims, and Deleted Claims.
+- **Manager Login:** Restricted access to the Pending Claims page requires a username ("1234") and password ("1234").
+- **Unit Testing:** Basic MSTest unit tests for core controller actions (SubmitClaim, ApproveClaim, RejectClaim, DeleteClaim, Login).
+
+## Prerequisites
+- **.NET SDK:** Version 6.0 or later (recommended).
+- **Visual Studio:** 2022 or later (with ASP.NET and web development workload).
+- **Web Browser:** Any modern browser (e.g., Chrome, Edge).
+
+## Installation
+1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/[YourUsername]/CMCS-Prototype.git
+   git clone <your-repository-url>
+   cd St10359529_POE_Prog6212

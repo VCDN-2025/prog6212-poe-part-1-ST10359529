@@ -1,0 +1,29 @@
+﻿@model IEnumerable<St10359529_POE_Prog6212.Models.Claim>
+@{
+    ViewData["Title"] = ViewBag.Title ?? "Claims";
+}
+
+<h2 class="mb-4">@ViewBag.Title</h2>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">No claims in this category.</p>
+}
+else
+{
+    <table class="table">
+        <thead><tr><th>ID</th><th>Lecturer</th><th>Total</th><th>Date</th></tr></thead>
+        <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@c.Name @c.Surname</td>
+                    <td>R @c.TotalAmount.ToString("F2")</td>
+                    <td>@c.SubmissionDate.ToString("dd MMM yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<a asp-action="PendingClaims" class="btn btn-primary">Back to Pending</a>

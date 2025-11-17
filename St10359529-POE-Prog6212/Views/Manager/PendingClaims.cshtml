@@ -1,9 +1,11 @@
 ﻿@model IEnumerable<St10359529_POE_Prog6212.Models.Claim>
-@{
-    ViewData["Title"] = "Pending Claims";
-}
 
-<h2 class="mb-4 text-primary">Pending Claims</h2>
+<h2 class="mb-4 text-primary">Pending Claims - Manager Review</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
 
 @if (!Model.Any())
 {
@@ -19,43 +21,35 @@ else
                 <th>Hours</th>
                 <th>Rate</th>
                 <th>Total</th>
-                <th>Submitted</th>
-                <th>Notes / Warnings</th>
+                <th>Risk Flags</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var claim in Model)
+            @foreach (var c in Model)
             {
                 <tr>
-                    <td>@claim.Id</td>
-                    <td>@claim.Name @claim.Surname</td>
-                    <td>@claim.HoursWorked</td>
-                    <td>R @claim.HourlyRate</td>
-                    <td class="text-success fw-bold">R @claim.TotalAmount.ToString("F2")</td>
-                    <td>@claim.SubmissionDate.ToString("dd MMM yyyy")</td>
+                    <td>@c.Id</td>
+                    <td>@c.Name @c.Surname</td>
+                    <td>@c.HoursWorked</td>
+                    <td>R @c.HourlyRate</td>
+                    <td>R @c.TotalAmount.ToString("F2")</td>
+                    <td class="text-danger fw-bold">@c.Notes</td>
                     <td>
-                        @if (!string.IsNullOrEmpty(claim.Notes) && claim.Notes.Contains("HIGH RISK"))
-                        {
-                            <span class="badge bg-danger">@claim.Notes</span>
-                        }
-                        else
-                        {
-                            <span class="text-muted">@claim.Notes</span>
-                        }
-                    </td>
-                    <td>
-                        <form asp-action="ApproveClaim" method="post" style="display:inline;">
-                            <input type="hidden" name="id" value="@claim.Id" />
+                        <form asp-action="ApproveClaim" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@c.Id" />
                             <button type="submit" class="btn btn-success btn-sm">Approve</button>
                         </form>
-                        <form asp-action="RejectClaim" method="post" style="display:inline;">
-                            <input type="hidden" name="id" value="@claim.Id" />
+                        <form asp-action="RejectClaim" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@c.Id" />
                             <button type="submit" class="btn btn-warning btn-sm">Reject</button>
                         </form>
-                        <form asp-action="DeleteClaim" method="post" style="display:inline;">
-                            <input type="hidden" name="id" value="@claim.Id" />
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        <form asp-action="DeleteClaim" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@c.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Delete permanently?')">
+                                Delete
+                            </button>
                         </form>
                     </td>
                 </tr>

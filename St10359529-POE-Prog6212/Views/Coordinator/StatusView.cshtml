@@ -1,0 +1,38 @@
+﻿@model IEnumerable<St10359529_POE_Prog6212.Models.Claim>
+
+<h2 class="mb-4 text-primary">@ViewBag.PageTitle</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No claims in this category.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Lecturer</th>
+                <th>Hours</th>
+                <th>Rate</th>
+                <th>Total</th>
+                <th>Submitted</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in Model)
+            {
+                <tr>
+                    <td>@claim.Id</td>
+                    <td>@claim.Name @claim.Surname</td>
+                    <td>@claim.HoursWorked</td>
+                    <td>R @claim.HourlyRate</td>
+                    <td class="text-success fw-bold">R @claim.TotalAmount.ToString("F2")</td>
+                    <td>@claim.SubmissionDate.ToString("dd MMM yyyy")</td>
+                    <td>@claim.Notes</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

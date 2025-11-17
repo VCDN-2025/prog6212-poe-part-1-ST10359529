@@ -1,4 +1,6 @@
-﻿namespace St10359529_POE_Prog6212.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace St10359529_POE_Prog6212.Models
 {
     using System.ComponentModel.DataAnnotations;
 
@@ -12,6 +14,10 @@
             [StringLength(100)]
             public string Name { get; set; } = string.Empty;
 
+            public string Surname { get; set; } = string.Empty;
+            [Required]
+            [Phone]
+            public string ContactNumber { get; set; } = string.Empty;
             [Required]
             [EmailAddress]
             public string Email { get; set; } = string.Empty;
@@ -22,3 +28,8 @@
         }
     }
 }
+
+
+
+
+

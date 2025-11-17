@@ -1,24 +1,27 @@
 ﻿@model IEnumerable<St10359529_POE_Prog6212.Models.Claim>
-<h2 class="mb-4">Pending Claims</h2>
+@{
+    ViewData["Title"] = "Pending Claims";
+}
+
+<h2 class="mb-4 text-primary">Pending Claims</h2>
+
 @if (!Model.Any())
 {
-    <p class="text-info">No pending claims yet.</p>
+    <div class="alert alert-info">No pending claims at the moment.</div>
 }
 else
 {
-    <table class="table table-striped">
-        <thead>
+    <table class="table table-striped table-hover">
+        <thead class="table-primary">
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Contact Number</th>
+                <th>Lecturer</th>
                 <th>Hours</th>
+                <th>Rate</th>
                 <th>Total</th>
-                <th>Status</th>
-                <th>Submission Date</th>
-                
-                <th>Actions</th> <!-- New column for buttons -->
+                <th>Submitted</th>
+                <th>Notes / Warnings</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -26,14 +29,21 @@ else
             {
                 <tr>
                     <td>@claim.Id</td>
-                    <td>@claim.Name</td>
-                    <td>@claim.Surname</td>
-                    <td>@claim.ContactNumber</td>
+                    <td>@claim.Name @claim.Surname</td>
                     <td>@claim.HoursWorked</td>
-                    <td>@claim.TotalAmount</td>
-                    <td><span class="badge bg-warning">@claim.Status</span></td>
-                    <td>@claim.SubmissionDate.ToShortDateString()</td>
-                   
+                    <td>R @claim.HourlyRate</td>
+                    <td class="text-success fw-bold">R @claim.TotalAmount.ToString("F2")</td>
+                    <td>@claim.SubmissionDate.ToString("dd MMM yyyy")</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(claim.Notes) && claim.Notes.Contains("HIGH RISK"))
+                        {
+                            <span class="badge bg-danger">@claim.Notes</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">@claim.Notes</span>
+                        }
+                    </td>
                     <td>
                         <form asp-action="ApproveClaim" method="post" style="display:inline;">
                             <input type="hidden" name="id" value="@claim.Id" />
@@ -41,11 +51,11 @@ else
                         </form>
                         <form asp-action="RejectClaim" method="post" style="display:inline;">
                             <input type="hidden" name="id" value="@claim.Id" />
-                            <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                            <button type="submit" class="btn btn-warning btn-sm">Reject</button>
                         </form>
                         <form asp-action="DeleteClaim" method="post" style="display:inline;">
                             <input type="hidden" name="id" value="@claim.Id" />
-                            <button type="submit" class="btn btn-secondary btn-sm">Delete</button>
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -53,4 +63,3 @@ else
         </tbody>
     </table>
 }
-<a href="@Url.Action("Logout", "Coordinator")" class="btn btn-danger mt-3">Logout</a>

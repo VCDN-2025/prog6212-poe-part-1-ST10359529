@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace St10359529_POE_Prog6212
 {
     public class Program
@@ -6,13 +9,18 @@ namespace St10359529_POE_Prog6212
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Add services
             builder.Services.AddControllersWithViews();
-            builder.Services.AddSession(); // Enable session support
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Configure middleware
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
@@ -22,7 +30,7 @@ namespace St10359529_POE_Prog6212
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseSession(); // Use session middleware
+            app.UseSession();           // Session must be here
             app.UseAuthorization();
 
             app.MapControllerRoute(
@@ -33,11 +41,3 @@ namespace St10359529_POE_Prog6212
         }
     }
 }
-
-// References
-// ----------
-// GetBootstrap (2023) Bootstrap v5.1.3 documentation. Available at: https://getbootstrap.com/docs/5.1/getting-started/introduction/ (Accessed: 22 October 2025).
-// Microsoft (2023) ASP.NET Core documentation. Available at: https://docs.microsoft.com/en-us/aspnet/core (Accessed: 22 October 2025).
-// Microsoft (2023) MSTest framework documentation. Available at: https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mstest (Accessed: 22 October 2025).
-// Stack Overflow (2023) Various community answers on ASP.NET Core and C#. Available at: https://stackoverflow.com/ (Accessed: 22 October 2025).
-// -------

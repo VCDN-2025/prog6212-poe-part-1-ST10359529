@@ -1,0 +1,52 @@
+﻿
+@model dynamic
+<h2 class="mb-4">HR Claim Processing</h2>
+<h3>Processed Claims</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Total Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in ViewBag.ProcessedClaims)
+        {
+            <tr>
+                <td>@claim.Id</td>
+                <td>@claim.Name @claim.Surname</td>
+                <td>@claim.TotalAmount</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Lecturer Data Management</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Current Rate</th>
+            <th>New Rate</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lecturer in ViewBag.Lecturers)
+        {
+            <tr>
+                <td>@lecturer.Id</td>
+                <td>@lecturer.Name @lecturer.Surname</td>
+                <td>@lecturer.HourlyRate</td>
+                <td>
+                    <form asp-action="UpdateLecturerRate" method="post">
+                        <input type="hidden" name="lecturerId" value="@lecturer.Id" />
+                        <input type="number" name="newRate" step="0.01" class="form-control" />
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

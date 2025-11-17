@@ -35,3 +35,9 @@
 {
     <p class="text-info">No deleted claims yet.</p>
 }
+
+@{
+    ViewBag.PageTitle = "Approved Claims";  // Change title for each file
+    Layout = "_Layout";
+}
+<partial name="StatusView" model="Model" />

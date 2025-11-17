@@ -1,52 +1,66 @@
-﻿
-@model dynamic
-<h2 class="mb-4">HR Claim Processing</h2>
-<h3>Processed Claims</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Total Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var claim in ViewBag.ProcessedClaims)
-        {
-            <tr>
-                <td>@claim.Id</td>
-                <td>@claim.Name @claim.Surname</td>
-                <td>@claim.TotalAmount</td>
-            </tr>
-        }
-    </tbody>
-</table>
+﻿@model dynamic
+<h2 class="mb-4">HR Claim Processing Dashboard</h2>
 
-<h3>Lecturer Data Management</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Current Rate</th>
-            <th>New Rate</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var lecturer in ViewBag.Lecturers)
-        {
-            <tr>
-                <td>@lecturer.Id</td>
-                <td>@lecturer.Name @lecturer.Surname</td>
-                <td>@lecturer.HourlyRate</td>
-                <td>
-                    <form asp-action="UpdateLecturerRate" method="post">
-                        <input type="hidden" name="lecturerId" value="@lecturer.Id" />
-                        <input type="number" name="newRate" step="0.01" class="form-control" />
-                        <button type="submit" class="btn btn-primary">Update</button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-6">
+        <h4>All Claims Overview</h4>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Lecturer</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var claim in ViewBag.AllClaims)
+                {
+                    <tr>
+                        <td>@claim.Id</td>
+                        <td>@claim.Name @claim.Surname</td>
+                        <td>R @claim.TotalAmount</td>
+                        <td><span class="badge @(claim.Status == "Approved" ? "bg-success" : "bg-warning")">@claim.Status</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h4>Approved Claims Summary</h4>
+        <p class="lead">Total Approved Amount: R @ViewBag.TotalApprovedAmount.ToString("F2")</p>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Lecturer</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var claim in ViewBag.ApprovedClaims)
+                {
+                    <tr>
+                        <td>@claim.Id</td>
+                        <td>@claim.Name @claim.Surname</td>
+                        <td>R @claim.TotalAmount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <form asp-action="UpdateLecturerRate" method="post" class="mt-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Lecturer ID</label>
+                    <input name="lecturerId" class="form-control" required />
+                </div>
+                <div class="col-md-6">
+                    <label>New Hourly Rate</label>
+                    <input name="newRate" type="number" step="0.01" class="form-control" required />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Update Rate</button>
+        </form>
+    </div>
+</div>
+<a asp-action="Logout" class="btn btn-secondary mt-3">Logout</a>

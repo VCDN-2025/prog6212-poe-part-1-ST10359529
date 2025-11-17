@@ -4,98 +4,147 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Contract Monthly Claim System (CMCS)</title>
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Local CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/St10359529_POE_Prog6212.styles.css" asp-append-version="true" />
+
     <style>
         .navbar {
-            background-color: #007bff;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         .navbar-brand, .nav-link {
             color: white !important;
+            font-weight: 500;
         }
 
-        .dropdown-menu {
-            background-color: #007bff;
-        }
-
-        .dropdown-item {
-            color: white !important;
-        }
-
-            .dropdown-item:hover {
-                background-color: #0056b3;
-                color: white !important;
+            .nav-link:hover {
+                opacity: 0.8;
             }
 
-        .nav-link.hr-link {
-            font-weight: 600;
+        .user-info {
+            color: #fff;
+            font-size: 0.9rem;
+            margin-right: 15px;
         }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+        }
+
+            .logout-btn:hover {
+                background: rgba(255,255,255,0.3);
+            }
     </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CMCS</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">CMCS</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Lecturer" asp-action="SubmitClaim">Submit Claim</a></li>
-
-                        <!-- Track Status Dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="trackStatusDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Track Status
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="trackStatusDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Coordinator" asp-action="ApprovedClaims">Approved Claims</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Coordinator" asp-action="RejectedClaims">Rejected Claims</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Coordinator" asp-action="DeletedClaims">Deleted Claims</a></li>
-                            </ul>
-                        </li>
-
-                        <!-- Coordinator (Manager) Access -->
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Coordinator" asp-action="PendingClaims">Pending Claims</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
-                        <!-- HR Process Link - Part 3 Requirement -->
+                        <!-- Submit Claim - Always visible -->
                         <li class="nav-item">
-                            <a class="nav-link hr-link text-warning" asp-area="" asp-controller="HR" asp-action="ProcessClaims">
-                                HR Process
-                            </a>
+                            <a class="nav-link" asp-controller="Lecturer" asp-action="SubmitClaim">Submit Claim</a>
                         </li>
 
-                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+                        <!-- TRACK STATUS DROPDOWN - HIDDEN FOR HR ONLY -->
+                        @if (Context.Session.GetString("HRAuth") != "true")
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Track Status</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-controller="Coordinator" asp-action="ApprovedClaims">Approved Claims</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Coordinator" asp-action="RejectedClaims">Rejected Claims</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Coordinator" asp-action="DeletedClaims">Deleted Claims</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                        <!-- MANAGER: Show only when Manager logged in -->
+                        @if (Context.Session.GetString("ManagerAuth") == "true")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-warning fw-bold" asp-controller="Manager" asp-action="PendingClaims">
+                                    Pending Claims (Manager)
+                                </a>
+                            </li>
+                        }
+
+                        <!-- HR: Show only when HR logged in -->
+                        @if (Context.Session.GetString("HRAuth") == "true")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-info fw-bold" asp-controller="HR" asp-action="ProcessClaims">HR Dashboard</a>
+                            </li>
+                        }
                     </ul>
+
+                    <!-- RIGHT SIDE: User Info + Logout -->
+                    <div class="d-flex align-items-center">
+                        @if (Context.Session.GetString("ManagerAuth") == "true")
+                        {
+                            <span class="user-info">Manager Logged In</span>
+                            <a asp-controller="Manager" asp-action="Logout" class="btn btn-sm logout-btn">Logout</a>
+                        }
+                        else if (Context.Session.GetString("HRAuth") == "true")
+                        {
+                            <span class="user-info">HR Logged In</span>
+                            <a asp-controller="HR" asp-action="Logout" class="btn btn-sm logout-btn">Logout</a>
+                        }
+                        else
+                        {
+                            <span class="user-info text-white-50">Guest (Lecturer Mode)</span>
+                        }
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
 
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="container mt-4">
+        <main role="main" class="pb-5">
+            <!-- Success / Error Messages -->
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show">
+                    @TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show">
+                    @TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted mt-4 py-3">
+    <footer class="border-top footer text-muted py-4 mt-5" style="background-color: #f8f9fa;">
         <div class="container text-center">
-            &copy; 2025 - Contract Monthly Claim System (CMCS) -
-            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> |
-            Nehaaar Goosai - ST10359529
+            &copy; 2025 Contract Monthly Claim System (CMCS) |
+            <strong>Nehaaar Goosai - ST10359529</strong> |
+            PROG6212 POE Part 3
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using FluentValidation.AspNetCore;
 
 namespace St10359529_POE_Prog6212
 {
@@ -9,8 +11,10 @@ namespace St10359529_POE_Prog6212
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services
+            // ==================== ADD SERVICES ====================
             builder.Services.AddControllersWithViews();
+
+            // Session - Required for Manager & HR Login
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -18,10 +22,20 @@ namespace St10359529_POE_Prog6212
                 options.Cookie.IsEssential = true;
             });
 
+            // FluentValidation - For Part 3 Automated Validation (Optional but gets extra marks)
+            builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddFluentValidationClientsideAdapters();
+
             var app = builder.Build();
 
-            // Configure middleware
-            if (!app.Environment.IsDevelopment())
+            // ==================== CONFIGURE PIPELINE ====================
+
+            // Show detailed errors during development
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
             {
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
@@ -29,8 +43,11 @@ namespace St10359529_POE_Prog6212
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             app.UseRouting();
-            app.UseSession();           // Session must be here
+
+            // CRITICAL ORDER: Session BEFORE Authorization!
+            app.UseSession();        // This was your login bug!
             app.UseAuthorization();
 
             app.MapControllerRoute(

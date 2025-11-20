@@ -27,7 +27,7 @@ This README covers the setup, features, and usage for both parts.
 
 # Contract Monthly Claim System (CMCS)  
 **PROG6212 POE – Full Portfolio (Part 1 + Part 2 + Part 3)**  
-**Nehaaar Goosai – ST10359529**  
+**Nehaar Gosai – ST10359529**  
 **The Independent Institute of Education – 2025**
 
 ## Project Overview

@@ -31,7 +31,7 @@ namespace St10359529_POE_Prog6212.Controllers
 
             var pending = ClaimRepository.Claims.Where(c => c.Status == "Pending").ToList();
 
-            // AUTOMATION: High-risk flags (Part 3 requirement)
+            // AUTOMATION: High-risk flags 
             foreach (var c in pending)
             {
                 c.Notes = "";

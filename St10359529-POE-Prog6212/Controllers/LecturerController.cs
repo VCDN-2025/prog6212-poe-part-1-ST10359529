@@ -13,13 +13,13 @@ namespace St10359529_POE_Prog6212.Controllers
             _environment = environment;
         }
 
-        // GET: Show the claim submission form
+        
         public IActionResult SubmitClaim()
         {
             return View(new Claim());
         }
 
-        // POST: Process the submitted claim
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SubmitClaim(Claim model, IFormFile? documentFile)
@@ -28,14 +28,14 @@ namespace St10359529_POE_Prog6212.Controllers
             {
                 try
                 {
-                    // AUTOMATION: Auto-calculate total amount (Part 3 requirement)
+                   
                     model.TotalAmount = model.HoursWorked * model.HourlyRate;
 
-                    // Set required fields
+                  
                     model.Id = ClaimRepository.NextClaimId++;
                     model.SubmissionDate = DateTime.Now;
                     model.Status = "Pending";
-                    model.LecturerId = 1; // In real app: from session or login
+                    model.LecturerId = 1; 
 
                     // FILE UPLOAD (Safe & Professional)
                     if (documentFile != null && documentFile.Length > 0)
@@ -47,7 +47,7 @@ namespace St10359529_POE_Prog6212.Controllers
                             return View(model);
                         }
 
-                        // Extension check
+                       
                         var allowedExtensions = new[] { ".pdf", ".docx", ".xlsx" };
                         var ext = Path.GetExtension(documentFile.FileName).ToLowerInvariant();
                         if (!allowedExtensions.Contains(ext))
@@ -56,7 +56,6 @@ namespace St10359529_POE_Prog6212.Controllers
                             return View(model);
                         }
 
-                        // Save file with unique name to avoid conflicts
                         var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
                         Directory.CreateDirectory(uploadsFolder);
                         var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(documentFile.FileName)}";
@@ -67,18 +66,18 @@ namespace St10359529_POE_Prog6212.Controllers
                             documentFile.CopyTo(stream);
                         }
 
-                        // STORE FILE INFO DIRECTLY IN CLAIM MODEL (No extra Document class needed)
-                        model.DocumentName = documentFile.FileName;      // Original name
-                        model.DocumentPath = $"/uploads/{uniqueFileName}"; // URL path
+                     
+                        model.DocumentName = documentFile.FileName;      
+                        model.DocumentPath = $"/uploads/{uniqueFileName}"; 
                     }
 
-                    // Add claim to in-memory repository
+                    
                     ClaimRepository.Claims.Add(model);
 
-                    // SUCCESS MESSAGE + REDIRECT TO HOME (No more 404!)
+                    
                     TempData["Success"] = $"Claim #{model.Id} submitted successfully! Total Amount: R{model.TotalAmount:F2}";
 
-                    // BEST UX: Back to beautiful home page
+                  
                     return RedirectToAction("Index", "Home");
                 }
                 catch
@@ -87,11 +86,11 @@ namespace St10359529_POE_Prog6212.Controllers
                 }
             }
 
-            // If validation fails → show form again with errors
+           
             return View(model);
         }
 
-        // Track all claims for the current lecturer
+      
         public IActionResult TrackStatus()
         {
             var userClaims = ClaimRepository.Claims

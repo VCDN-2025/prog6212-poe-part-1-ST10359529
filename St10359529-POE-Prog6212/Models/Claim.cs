@@ -27,7 +27,7 @@ namespace St10359529_POE_Prog6212.Models
         public string Status { get; set; } = "Pending";
         public DateTime SubmissionDate { get; set; } = DateTime.Now;
         public string? Notes { get; set; }
-        public string? DocumentName { get; set; }      // Original uploaded filename
-        public string? DocumentPath { get; set; }      // Path like "/uploads/abc123_file.pdf"
+        public string? DocumentName { get; set; }      
+        public string? DocumentPath { get; set; }      
     }
 }
